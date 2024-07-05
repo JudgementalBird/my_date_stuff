@@ -17,13 +17,9 @@ pub struct DateTime {
 }
 impl DateTime {
 	pub fn add_sec_rollover(&mut self, sec: u64) {
-		
+		let start_year = self.year;
+
 		let std_month_length = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-		let mut used_month_length = std_month_length;
-		if is_leap_year(self.year) {
-				used_month_length[1] = 29;
-		}
-		let used_month_length = used_month_length;
 
 		self.second += sec;
 
@@ -42,47 +38,32 @@ impl DateTime {
 				self.hour -= 24;
 				self.day += 1;
 		};
-		let kind_to_use = true;
-		if kind_to_use {
-			// every whole dynamic length month is taken from day count and added to month count
-			// if month count surpasses amount in a year, year is taken from month count and added to year count,
-			// and leap year check is performed
-			loop {
-				let used_month_length = if self.month > 12 {
-					self.year += 1;
-					self.month -= 12;
-	
-					let mut used_month_length = std_month_length;
-					if is_leap_year(self.year) {
-						used_month_length[1] = 29;
-					}
-					used_month_length
-				} else {
-					used_month_length
-				};
-	
-				if self.day > used_month_length[self.month as usize - 1] {
-					self.day -= used_month_length[self.month as usize - 1];
-					self.month += 1;
-				} else {
-					break;
-				};
-			};
-		} else {
-			// every whole dynamic length month is taken from day count and added to month count,
-			// incrementing the year if we reach month 13
-			// This code does not yet account for leap years
-			while self.day > std_month_length[self.month as usize - 1] as u64 {
-				self.day -= std_month_length[self.month as usize - 1] as u64;
-				self.month += 1;
-				if self.month > 12 {
-					self.month = 1;
-					self.year += 1;
-				}
+		// every whole dynamic length month is taken from day count and added to month count,
+		// incrementing the year if we reach month 13
+		while self.day > std_month_length[self.month as usize - 1] as u64 {
+			self.day -= std_month_length[self.month as usize - 1] as u64;
+			self.month += 1;
+			if self.month > 12 {
+				self.month = 1;
+				self.year += 1;
 			}
 		}
-		
+		// remove leap days making sure to wrap backwards, because that happens to be the amount of days we need to remove to make it accurate...
+		let leap_days = crate::leap::leap_years_between(start_year, self.year);
+		if leap_days < self.day {
+			self.day -= leap_days;
+		} else if leap_days >= self.day {
+			self.month -= 1;
+			if self.month == 0 { // if we went past january, go to previous year (month 0 is month 12)
+				self.month = 12;
+				self.year -= 1;
+			}
+
+			self.day += std_month_length[self.month as usize - 1];
+			self.day -= leap_days;
+		}
 	}
+	
 	pub fn from_unix(time: u64) -> DateTime {
 		let mut utc_unix_epoch = DateTime {
 			timezone: TimeZone::GMT,

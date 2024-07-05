@@ -17,9 +17,9 @@ fn main() {
 		second: 2,
 	};
 
-	println!("{}",unix::now());
-	let utcnow = DateTime::from_unix(unix::now());
-
-	println!("{utcnow:?}");
-	println!("{}",leap::leap_years_between(1970,2024));
+	loop {
+		let utcnow = DateTime::from_unix(unix::now());
+		println!("{utcnow:?}");
+		std::thread::sleep(std::time::Duration::from_secs(1));
+	};
 }
