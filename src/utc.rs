@@ -23,32 +23,24 @@ impl DateTime {
 
 		self.second += sec;
 
-		// every whole minute is taken from second count and added to minute count
-		while self.second > 59 {
-				self.second -= 60;
-				self.minute += 1;
-		};
-		// every whole hour is taken from minute count and added to hour count
-		while self.minute > 59 {
-				self.minute -= 60;
-				self.hour += 1;
-		};
-		// every whole day cycle is taken from hour count and added to day cycle count
-		while self.hour > 23 {
-				self.hour -= 24;
-				self.day += 1;
-		};
-		// every whole dynamic length month is taken from day count and added to month count,
-		// incrementing the year if we reach month 13
-		while self.day > std_month_length[self.month as usize - 1] as u64 {
-			self.day -= std_month_length[self.month as usize - 1] as u64;
+		self.minute = self.second/60;
+		self.second = self.second%60;
+
+		self.hour = self.minute/60;
+		self.minute = self.minute%60;
+
+		self.day = self.hour/24+1; //I have no idea why I have to add 1 for this to be accurate again!
+		self.hour = self.hour%24;
+		
+		while self.day > std_month_length[self.month as usize - 1] {
+			self.day -= std_month_length[self.month as usize - 1];
 			self.month += 1;
 			if self.month > 12 {
 				self.month = 1;
 				self.year += 1;
 			}
 		}
-		// remove leap days making sure to wrap backwards, because that happens to be the amount of days we need to remove to make it accurate...
+		// remove leap days making sure to wrap backwards, because that happens to be the amount of days we need to remove to make it accurate... I have no idea why...
 		let leap_days = crate::leap::leap_years_between(start_year, self.year);
 		if leap_days < self.day {
 			self.day -= leap_days;
