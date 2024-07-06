@@ -7,7 +7,7 @@ mod utc;
 mod leap;
 
 fn main() {
-	let sl_epoch_gmt = utc::DateTime {
+	let sl_epoch_gmt = DateTime {
 		timezone: utc::TimeZone::GMT,
 		year: 2022,
 		month: 8,
@@ -18,7 +18,7 @@ fn main() {
 	};
 
 	loop {
-		let utcnow = DateTime::from_unix(unix::now());
+		let utcnow = DateTime::now();
 		println!("{utcnow:?}");
 		std::thread::sleep(std::time::Duration::from_secs(1));
 	};

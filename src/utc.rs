@@ -1,4 +1,4 @@
-use crate::leap::is_leap_year;
+use crate::{leap::is_leap_year, unix};
 
 #[derive(Debug)]
 pub enum TimeZone {
@@ -70,5 +70,9 @@ impl DateTime {
 		utc_unix_epoch.add_sec_rollover(time);
 		
 		utc_unix_epoch
+	}
+
+	pub fn now() -> DateTime {
+		DateTime::from_unix(unix::now())
 	}
 }
