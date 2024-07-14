@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["TimeZone"],"struct":["DateTime"]};
+window.SIDEBAR_ITEMS = {"struct":["DateTime"]};

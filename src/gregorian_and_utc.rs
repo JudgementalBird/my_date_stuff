@@ -3,11 +3,6 @@
 
 use crate::unix;
 
-#[derive(Debug, Copy, Clone)]
-pub enum TimeZone {
-	GMT
-}
-
 /// Gregorian calendar... UTC... 
 #[derive(Debug, Copy, Clone)]
 pub struct DateTime {

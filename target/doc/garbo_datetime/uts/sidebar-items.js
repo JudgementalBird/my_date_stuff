@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["from_utc"],"struct":["DateTime"]};
+window.SIDEBAR_ITEMS = {"struct":["UTSDateTime"]};

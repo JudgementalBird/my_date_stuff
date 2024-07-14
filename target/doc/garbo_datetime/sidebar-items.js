@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["main","secs_since_sl_creation"],"mod":["gregorian_and_utc","leap","unix","uts"]};
+window.SIDEBAR_ITEMS = {"fn":["main"],"mod":["gregorian_and_utc","leap","unix","uts"]};
