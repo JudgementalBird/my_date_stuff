@@ -3,7 +3,7 @@
 
 use crate::unix;
 
-/// Gregorian calendar... UTC... 
+/// Type to hold Gregorian calendar date with UTC time
 #[derive(Debug, Copy, Clone)]
 pub struct DateTime {
 	year: u64,

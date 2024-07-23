@@ -1,7 +1,7 @@
 //! # Garbo Datetime
 //! 
 //! This is a bad crate that deals with date and time, made for my own personal uses and uploaded for convenience.<br>
-//! Several things are not handled, and many functions will provide incorrect outputs with certain valid inputs. See module documentation for some (not all) of the things that are not handled.
+//! Several things are not handled, and many functions will by design provide incorrect outputs with certain valid inputs. See module documentation for some (not all) of the things that are not handled.
 
 //use crate::gregorian_and_utc::DateTime;
 //
@@ -16,6 +16,9 @@ mod gregorian_and_utc;
 mod leap;
 mod unix;
 mod uts;
+
+use std::{thread, time::Duration};
+use gregorian_and_utc::DateTime;
 
 /// For testing
 fn main() {
@@ -40,9 +43,9 @@ fn main() {
 	//};
 
 	loop {
-		//let utcnow = DateTime::now();
-		//println!("{utcnow:?}");
+		let utcnow = DateTime::now();
+		println!("{utcnow:?}");
 		
-		std::thread::sleep(std::time::Duration::from_secs(1));
+		thread::sleep(Duration::from_secs(1));
 	};
 }
